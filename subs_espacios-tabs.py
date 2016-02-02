@@ -2,12 +2,12 @@
 
 import sys
 
-try:
-	arquivo = sys.argv[1]
-	arquivo = open(arquivo,"r").read()
-except:
-	print(u"Necesitas introducir de argumento un documento de texto")
-	sys.exit()
+if len(sys.argv) > 1:
+	nome_arquivo = sys.argv[1]
+else:
+	nome_arquivo = raw_input(">>> Introduce o nome do arquivo: ")
+	
+texto_arquivo = open(nome_arquivo,"r").read()
 	
 print(u"Substituir:")
 opcion = raw_input(u"[1] - Espacios por Tabs\n[2] - Tabs por Espacios\n>>> ")
@@ -19,15 +19,11 @@ else:
 	
 def substituir(text,opc,num_esp):
 	if opc == "1":
-		lista_separador = text.split(" "*int(num_esp))
-		texto_salida = [lista_separador[0]]+["\t"+x for x in lista_separador[1:len(lista_separador)]]
-		texto_salida = "".join(texto_salida)
+		texto_salida = text.replace(" "*int(num_esp),"\t")
 	elif opc == "2":
-		lista_separador = text.split("\t")
-		texto_salida = [lista_separador[0]]+[" "*int(num_esp)+x for x in lista_separador[1:len(lista_separador)]]
-		texto_salida = "".join(texto_salida)
+		texto_salida = text.replace("\t"," "*int(num_esp))
 	return texto_salida
 	
-arquivo_a_crear = open("Subs_"+sys.argv[1],"w")
-arquivo_a_crear.write(substituir(arquivo,opcion,num_espacios))
+arquivo_a_crear = open(nome_arquivo,"w")
+arquivo_a_crear.write(substituir(texto_arquivo,opcion,num_espacios))
 arquivo_a_crear.close()
